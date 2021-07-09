@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,25 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view("posts");
+    return view("posts", [
+        "posts" => Post::all()
+    ]);
 });
 
 # Routes requests from "localhost/posts/slug" and loads slug.html
 Route::get('posts/{post}', function($slug) {
-    # Getting slug.html path
-    $path = __DIR__ . "/../resources/posts/{$slug}.html";
-
-    # Check if slug.html exists
-    if (!file_exists($path)) {
-        return redirect('/');
-    }
-
-    # Cache slug.html inside $post and
-    $post = cache() -> remember("posts.{$slug}", 60, fn()=>file_get_contents($path));
-
-    # Return $post containing slug.html to user
-    return view("post", [
-        "post" => $post
+    # Find a post by it's slug and pass it to a view called "post"
+    return view('post', [
+        'post' => Post::find($slug)
     ]);
+
 # Regex to only accept page requests with letters, -, and _
 }) -> where('post', '[A-z_\-]+');
