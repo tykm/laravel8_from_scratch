@@ -2,11 +2,14 @@
 
 <title>Tyler's Blog</title>
 <link rel="stylesheet" href="/css/app.css">
-<script src="js/app.js"></script>
 
 <body>
     <article>
-        <?= $post; ?>
+        <h1><?= $post->title; ?></h1>
+
+        <div>
+            <?= $post->body; ?>
+        </div>
     </article>
 
     <a href="/">Go Back</a>
